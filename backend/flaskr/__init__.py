@@ -26,8 +26,11 @@ def create_app(test_config=None):
   Create an endpoint to handle GET requests 
   for all available categories.
   '''
-
-
+  @app.route('/')
+  def test():
+    return jsonify({
+      'success': True,
+    })
   '''
   @TODO: 
   Create an endpoint to handle GET requests for questions, 
