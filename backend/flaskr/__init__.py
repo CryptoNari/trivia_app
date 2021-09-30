@@ -13,29 +13,29 @@ def create_app(test_config=None):
   app = Flask(__name__)
   setup_db(app)
   '''
-  @TODO: Set up CORS. Allow '*' for origins. Delete the sample route after completing the TODOs
+  Set up CORS. Allow '*' for origins. Delete the sample route after completing the TODOs
   '''
   cors = CORS(app, resources={r"/*":{'origins':'*'}})
   '''
-  @TODO: Use the after_request decorator to set Access-Control-Allow
+  Use the after_request decorator to set Access-Control-Allow
   '''
   @app.after_request
   def after_request(response):
     response.headers.add('Access-Control-Allow-Headers','Content-Type, Authorization')
     response.headers.add('Access-Control-Allow-Methods','GET, POST, PATCH, DELETE, OPTIONS')
     return response
-  '''
-  @TODO: 
+  ''' 
   Create an endpoint to handle GET requests 
   for all available categories.
   '''
-  @app.route('/questions')
-  def retrieve_questions():
-    query = Question.query.all()
-    questions = [question.format() for question in query]
+  @app.route('/categories')
+  def retrieve_categories():
+    query = Category.query.all()
+    categories = [category.format() for category in query]
     return jsonify({
       'success': True,
-      'questions': questions
+      'categories': categories,
+      'total_categories': len(categories)
     })
   '''
   @TODO: 
@@ -49,7 +49,14 @@ def create_app(test_config=None):
   ten questions per page and pagination at the bottom of the screen for three pages.
   Clicking on the page numbers should update the questions. 
   '''
-
+  @app.route('/questions')
+  def retrieve_questions():
+    query = Question.query.all()
+    questions = [question.format() for question in query]
+    return jsonify({
+      'success': True,
+      'questions': questions
+    })
   '''
   @TODO: 
   Create an endpoint to DELETE question using a question ID. 

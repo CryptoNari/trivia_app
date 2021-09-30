@@ -75,6 +75,31 @@ One note before you delve into your tasks: for each endpoint, you are expected t
 
 9. Create error handlers for all expected errors including 400, 404, 422 and 500. 
 
+## API Reference
+
+### Getting Started
+
+### Error Handling
+
+### Endpoints
+#### GET ('/categories')
+- General:
+    - Fetches a dictionary of categories in which the keys are the ids and the value is the corresponding string of the category
+    - Request Arguments: None
+- Sample:
+    - `curl http://127.0.0.1:5000/categories`
+
+- Returns an object with a single key, categories, that contains a object of id: category_string key:value pairs
+```
+{
+'1' : "Science",
+'2' : "Art",
+'3' : "Geography",
+'4' : "History",
+'5' : "Entertainment",
+'6' : "Sports"
+}
+```
 
 
 ## Review Comment to the Students
