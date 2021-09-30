@@ -29,10 +29,13 @@ def create_app(test_config=None):
   Create an endpoint to handle GET requests 
   for all available categories.
   '''
-  @app.route('/')
-  def test():
+  @app.route('/questions')
+  def retrieve_questions():
+    query = Question.query.all()
+    questions = [question.format() for question in query]
     return jsonify({
       'success': True,
+      'questions': questions
     })
   '''
   @TODO: 
