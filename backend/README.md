@@ -238,6 +238,42 @@ One note before you delve into your tasks: for each endpoint, you are expected t
 }
 ```
 
+#### POST ('/questions')
+- General:
+    - Adds a question to the dictionary 
+    - Request data: {question(type=String),answer(type=String),category(type=Int),difficulty(type=Int) 
+- Sample:
+    - `curl -d '{"question":"question-text","answer":"answer_text","category":2,"difficulty":2}'\`
+      `-H "Content-Type: application/json" \`
+      `--request POST http://127.0.0.1:5000/questions`
+
+- Returns:
+```
+{
+  "success": true, 
+  "question": {
+    "id": 24, 
+    "question": "question-text", 
+    "answer": "answer_text", 
+    "category": 2, 
+    "difficulty": 2
+  }
+}
+```
+
+#### DELETE ('/questions/<int:question_id>')
+- General:
+    - Deletes a question with the given ID from the dictionary, if it exists 
+- Sample:
+    - `curl --request DELETE http://127.0.0.1:5000/questions/24`
+
+- Returns:
+```
+{
+  "success": true
+}
+```
+
 ## Review Comment to the Students
 ```
 This README is missing documentation of your endpoints. Below is an example for your endpoint to get all categories. Please use it as a reference for creating your documentation and resubmit your code. 

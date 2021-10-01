@@ -1,10 +1,11 @@
 import os
+import sys
 from flask import Flask, request, abort, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 import random
 
-from models import setup_db, Question, Category
+from models import setup_db, Question, Category, db
 
 QUESTIONS_PER_PAGE = 10
 
@@ -48,8 +49,7 @@ def create_app(test_config=None):
       'categories': categories,
       'total_categories': len(categories)
     })
-  '''
-  @TODO: 
+  ''' 
   Create an endpoint to handle GET requests for questions, 
   including pagination (every 10 questions). 
   This endpoint should return a list of questions, 
@@ -83,9 +83,25 @@ def create_app(test_config=None):
   TEST: When you click the trash icon next to a question, the question will be removed.
   This removal will persist in the database and when you refresh the page. 
   '''
+  @app.route('/questions/<int:question_id>', methods=['DELETE'])
+  def delete_question(question_id):
+    try:
+      question = Question.query.get(question_id)
+      question.delete()
+      result = {
+        'success': True,
+      }
 
-  '''
-  @TODO: 
+    except:
+      db.session.rollback()
+      print(sys.exc_info())
+      abort(422)
+    finally:
+      db.session.close()
+    return jsonify(result)
+
+
+  ''' 
   Create an endpoint to POST a new question, 
   which will require the question and answer text, 
   category, and difficulty score.
@@ -94,6 +110,30 @@ def create_app(test_config=None):
   the form will clear and the question will appear at the end of the last page
   of the questions list in the "List" tab.  
   '''
+  @app.route('/questions', methods=['POST'])
+  def create_question():
+    body = request.get_json()
+    try:
+      new_question = body.get('question')
+      new_answer = body.get('answer')
+      new_category = body.get('category')
+      new_difficulty = body.get('difficulty')
+      
+      question = Question(question=new_question, answer=new_answer, category=new_category, difficulty=new_difficulty)
+      question.insert()
+      
+      result = {
+        'success': True,
+        'question': question.format()
+      }
+
+    except:
+      db.session.rollback()
+      print(sys.exc_info())
+      abort(422)
+    finally:
+      db.session.close()
+    return jsonify(result)
 
   '''
   @TODO: 
@@ -133,7 +173,18 @@ def create_app(test_config=None):
   Create error handlers for all expected errors 
   including 404 and 422. 
   '''
-  
+  @app.errorhandler(422)
+  def unprocessable(error):
+    return (
+      jsonify({
+        'success': False,
+        'error': 422,
+        'message': 'unprocessable'
+      }),
+      422
+    )
+
+
   return app
 
     

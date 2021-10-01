@@ -18,6 +18,13 @@ class TriviaTestCase(unittest.TestCase):
         self.database_path = "postgres:///{}".format( self.database_name)
         setup_db(self.app, self.database_path)
 
+        self.new_question = {
+            'question':'This is the question',
+            'answer':'This is the answer',
+            'category': 2,
+            'difficulty': 3
+        }
+
         # binds the app to the current context
         with self.app.app_context():
             self.db = SQLAlchemy()
@@ -51,6 +58,36 @@ class TriviaTestCase(unittest.TestCase):
         self.assertTrue(data['questions'])
         self.assertTrue(data['categories'])
         self.assertTrue(data['total_questions'])
+
+    def test_create_new_question(self):
+        res = self.client().post('/questions', json=self.new_question)
+        data = json.loads(res.data)
+        
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'],True)
+        self.assertEqual(data['question']['question'], self.new_question['question'])
+        self.assertEqual(data['question']['answer'], self.new_question['answer'])
+        self.assertEqual(data['question']['category'], self.new_question['category'])
+        self.assertEqual(data['question']['difficulty'], self.new_question['difficulty'])
+
+    def test_delete_question(self):
+        query = Question.query.filter(Question.question==self.new_question['question']).one_or_none()
+        question_id = query.id
+        res = self.client().delete('/questions/{}'.format(question_id))
+        data = json.loads(res.data)
+        
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'],True)
+
+        
+
+    """ def test_422_create_new_question_fail(self):
+        res = self.client().post('/questions')
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 422)
+        self.assertEqual(data['success'], False) 
+        self.assertEqual(data['message'], 'unprocessable') """
 
 
 # Make the tests conveniently executable
