@@ -262,8 +262,10 @@ Errors arre returned in JSON format:
 
 #### POST ('/questions')
 - General:
-    - Adds a question to the dictionary 
-    - Request data: {question(type=String),answer(type=String),category(type=Int),difficulty(type=Int) 
+    - Adds a question to the dictionary or search for a question in the dictonary
+
+- Add a Question:    
+    - Request data: {question(type=String),answer(type=String),category(type=Int),difficulty(type=Int)}
 - Sample:
     - `curl -d '{"question":"question-text","answer":"answer_text","category":2,"difficulty":2}'\`
       `-H "Content-Type: application/json" \`
@@ -282,6 +284,69 @@ Errors arre returned in JSON format:
   }
 }
 ```
+- Search for Questions:    
+    - Request data: {search(type=String)} 
+- Sample:
+    - `curl -d '{"search":"Which"}' -H "Content-Type: application/json" --request POST http://127.0.0.1:5000/questions`
+
+Returns:
+```
+{
+  "success": true, 
+  "questions": [
+    {
+      "id": 10, 
+      "question": "Which is the only team to play in every soccer World Cup tournament?", 
+      "answer": "Brazil", 
+      "category": 6, 
+      "difficulty": 3
+    }, 
+    {
+      "id": 11, 
+      "question": "Which country won the first ever soccer World Cup in 1930?", 
+      "answer": "Uruguay", 
+      "category": 6, 
+      "difficulty": 4
+    }, 
+    {
+      "id": 14, 
+      "question": "In which royal palace would you find the Hall of Mirrors?", 
+      "answer": "The Palace of Versailles", 
+      "category": 3, 
+      "difficulty": 3
+    }, 
+    {
+      "id": 15, 
+      "question": "The Taj Mahal is located in which Indian city?", 
+      "answer": "Agra", 
+      "category": 3, 
+      "difficulty": 2
+    }, 
+    {
+      "id": 16, 
+      "question": "Which Dutch graphic artist\u2013initials M C was a creator of optical illusions?", 
+      "answer": "Escher", 
+      "category": 2, 
+      "difficulty": 1
+    }, 
+    {
+      "id": 19, 
+      "question": "Which American artist was a pioneer of Abstract Expressionism, and a leading exponent of action painting?", 
+      "answer": "Jackson Pollock", 
+      "category": 2, 
+      "difficulty": 2
+    }, 
+    {
+      "id": 23, 
+      "question": "Which dung beetle was worshipped by the ancient Egyptians?", 
+      "answer": "Scarab", 
+      "category": 4, 
+      "difficulty": 4
+    }
+  ], 
+  "total_found": 7
+}
+```    
 
 #### DELETE ('/questions/<int:question_id>')
 - General:

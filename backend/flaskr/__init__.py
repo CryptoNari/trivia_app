@@ -111,24 +111,43 @@ def create_app(test_config=None):
 
   TEST: When you submit a question on the "Add" tab, 
   the form will clear and the question will appear at the end of the last page
-  of the questions list in the "List" tab.  
+  of the questions list in the "List" tab.
+
+  Create a POST endpoint to get questions based on a search term. 
+  It should return any questions for whom the search term 
+  is a substring of the question. 
+
+  TEST: Search by any phrase. The questions list will update to include 
+  only question that include that string within their question. 
+  Try using the word "title" to start.   
   '''
   @app.route('/questions', methods=['POST'])
   def create_question():
     body = request.get_json()
+    new_question = body.get('question', None)
+    new_answer = body.get('answer', None)
+    new_category = body.get('category', None)
+    new_difficulty = body.get('difficulty', None)
+    search = body.get('search', None)
+    
     try:
-      new_question = body.get('question')
-      new_answer = body.get('answer')
-      new_category = body.get('category')
-      new_difficulty = body.get('difficulty')
-      
-      question = Question(question=new_question, answer=new_answer, category=new_category, difficulty=new_difficulty)
-      question.insert()
-      
-      result = {
-        'success': True,
-        'question': question.format()
-      }
+      if search:
+        # Search questions
+        query= Question.query.filter(Question.question.ilike("%{}%".format(search)))
+        searched_questions = paginate_questions(request, query)
+        result = {
+          'success': True,
+          'questions': searched_questions,
+          'total_found': len(searched_questions)
+        }
+      else:
+        # POST a new question
+        question = Question(question=new_question, answer=new_answer, category=new_category, difficulty=new_difficulty)
+        question.insert()
+        result = {
+          'success': True,
+          'question': question.format()
+        }
 
     except:
       db.session.rollback()
@@ -137,17 +156,6 @@ def create_app(test_config=None):
     finally:
       db.session.close()
     return jsonify(result)
-
-  '''
-  @TODO: 
-  Create a POST endpoint to get questions based on a search term. 
-  It should return any questions for whom the search term 
-  is a substring of the question. 
-
-  TEST: Search by any phrase. The questions list will update to include 
-  only question that include that string within their question. 
-  Try using the word "title" to start. 
-  '''
 
   '''
   @TODO: 
@@ -171,8 +179,7 @@ def create_app(test_config=None):
   and shown whether they were correct or not. 
   '''
 
-  '''
-  @TODO: 
+  ''' 
   Create error handlers for all expected errors 
   including 404 and 422. 
   '''

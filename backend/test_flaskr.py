@@ -68,7 +68,25 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data['question']['question'], self.new_question['question'])
         self.assertEqual(data['question']['answer'], self.new_question['answer'])
         self.assertEqual(data['question']['category'], self.new_question['category'])
-        self.assertEqual(data['question']['difficulty'], self.new_question['difficulty'])
+        self.assertEqual(data['question']['difficulty'], self.new_question['difficulty']) 
+
+    def test_search_question(self):
+        res = self.client().post('/questions', json={'search': 'Which'})
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'],True)
+        self.assertTrue(data['questions'])
+        self.assertTrue(data['total_found']>0)
+
+    def test_search_question_without_result(self):
+        res = self.client().post('/questions', json={'search': 'bababensfe'})
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'],True)
+        self.assertFalse(data['questions'])
+        self.assertEqual(data['total_found'], 0)
 
     def test_delete_question(self):
         query = Question.query.filter(Question.question==self.new_question['question']).one_or_none()
