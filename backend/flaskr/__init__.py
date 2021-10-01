@@ -8,9 +8,20 @@ from models import setup_db, Question, Category
 
 QUESTIONS_PER_PAGE = 10
 
+def paginate_questions(request, query):
+  page = request.args.get('page', 1, type=int)
+  start = (page - 1) * QUESTIONS_PER_PAGE
+  end = start + QUESTIONS_PER_PAGE
+
+  questions = [question.format() for question in query]
+  page_questions = questions[start:end]
+
+  return page_questions
+
 def create_app(test_config=None):
   # create and configure the app
   app = Flask(__name__)
+  app.config['JSON_SORT_KEYS'] = False
   setup_db(app)
   '''
   Set up CORS. Allow '*' for origins. Delete the sample route after completing the TODOs
@@ -52,10 +63,18 @@ def create_app(test_config=None):
   @app.route('/questions')
   def retrieve_questions():
     query = Question.query.all()
-    questions = [question.format() for question in query]
+    #questions = [question.format() for question in query]
+    page_questions = paginate_questions(request, query)
+    query_cat = Category.query.all()
+    categories = [category.format() for category in query_cat]
+
     return jsonify({
       'success': True,
-      'questions': questions
+      'questions': page_questions,
+      'total_questions': len(query),
+      'categories':  categories,
+      'current_category ': '',
+      'page': request.args.get('page', 1, type=int),
     })
   '''
   @TODO: 
