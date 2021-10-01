@@ -86,7 +86,6 @@ def create_app(test_config=None):
   def delete_question(question_id):
     try:
       question = Question.query.get(question_id)
-      print(question)
       question.delete()
       result = {
         'success': True,
@@ -166,6 +165,24 @@ def create_app(test_config=None):
   category to be shown. 
   '''
 
+  @app.route('/category/<int:category_id>/questions')
+  def retrieve_category_questions(category_id):
+    try:
+      questions = Question.query.filter(Question.category==category_id).all()
+      page_questions = paginate_questions (request, questions)
+      result = {
+        'success': True,
+        'questions': page_questions,
+        'category_total': len(questions)
+      }
+
+    except:
+      db.session.rollback()
+      print(sys.exc_info())  
+      abort(422)
+    finally:
+      db.session.close()
+    return jsonify(result)
 
   '''
   @TODO: 

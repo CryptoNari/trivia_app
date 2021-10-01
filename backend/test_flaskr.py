@@ -88,6 +88,24 @@ class TriviaTestCase(unittest.TestCase):
         self.assertFalse(data['questions'])
         self.assertEqual(data['total_found'], 0)
 
+    def test_category_questions(self):
+        res = self.client().get('/category/1/questions')
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'],True)
+        self.assertTrue(data['questions'])
+        self.assertTrue(data['category_total']>0) 
+
+    def test_category_questions_without_result(self):
+        res = self.client().get('/category/2000/questions')
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'],True)
+        self.assertFalse(data['questions'])
+        self.assertEqual(data['category_total'],0)       
+
     def test_delete_question(self):
         query = Question.query.filter(Question.question==self.new_question['question']).one_or_none()
         question_id = query.id

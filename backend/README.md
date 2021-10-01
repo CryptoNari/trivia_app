@@ -260,6 +260,44 @@ Errors arre returned in JSON format:
 }
 ```
 
+#### GET ('/category/<int:category_id>/questions')
+- General:
+    - Fetches a dictionary of paginated questions with the given Category(ID). 10 questions per page 
+    - Request Arguments: page (type=int), default = 1
+- Sample:
+    - `curl http://127.0.0.1:5000/category/1/questions?page=1`
+
+- Returns:
+```
+{
+  "success": true, 
+  "questions": [
+    {
+      "id": 20, 
+      "question": "What is the heaviest organ in the human body?", 
+      "answer": "The Liver", 
+      "category": 1, 
+      "difficulty": 4
+    }, 
+    {
+      "id": 21, 
+      "question": "Who discovered penicillin?", 
+      "answer": "Alexander Fleming", 
+      "category": 1, 
+      "difficulty": 3
+    }, 
+    {
+      "id": 22, 
+      "question": "Hematology is a branch of medicine involving the study of what?", 
+      "answer": "Blood", 
+      "category": 1, 
+      "difficulty": 4
+    }
+  ], 
+  "category_total": 3
+}
+```
+
 #### POST ('/questions')
 - General:
     - Adds a question to the dictionary or search for a question in the dictonary
