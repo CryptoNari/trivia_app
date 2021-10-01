@@ -79,9 +79,31 @@ One note before you delve into your tasks: for each endpoint, you are expected t
 
 ### Getting Started
 
+This Application can only be run locally. The backend app is hosted at default `http://127.0.0.1:5000/`, frontend proxy is configurated.
+
+Authentication or API keys are not required.
+
 ### Error Handling
 
+Three error types are implemented:
+
+- 400: Bad request
+- 404: Resource not found
+- 422: Not processable
+
+Errors arre returned in JSON format:
+
+```
+{
+  "success": false, 
+  "error": 404, 
+  "message": "resource not found"
+}
+```
+
+
 ### Endpoints
+
 #### GET ('/categories')
 - General:
     - Fetches a dictionary of categories in which the keys are the ids and the value is the corresponding string of the category

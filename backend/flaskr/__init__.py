@@ -76,8 +76,7 @@ def create_app(test_config=None):
       'current_category ': '',
       'page': request.args.get('page', 1, type=int),
     })
-  '''
-  @TODO: 
+  ''' 
   Create an endpoint to DELETE question using a question ID. 
 
   TEST: When you click the trash icon next to a question, the question will be removed.
@@ -87,6 +86,7 @@ def create_app(test_config=None):
   def delete_question(question_id):
     try:
       question = Question.query.get(question_id)
+      print(question)
       question.delete()
       result = {
         'success': True,
@@ -95,7 +95,10 @@ def create_app(test_config=None):
     except:
       db.session.rollback()
       print(sys.exc_info())
-      abort(422)
+      if question == None:
+        abort(404)
+      else:  
+        abort(422)
     finally:
       db.session.close()
     return jsonify(result)
@@ -184,6 +187,26 @@ def create_app(test_config=None):
       422
     )
 
+  @app.errorhandler(404)
+  def not_found(error):
+    return (
+      jsonify({
+        'success': False,
+        'error': 404,
+        'message': 'resource not found'
+      }),
+      404
+    )
+  @app.errorhandler(400)
+  def bad_request(error):
+    return (
+      jsonify({
+        'success': False,
+        'error': 400,
+        'message': 'bad request'
+      }),
+      400
+    )
 
   return app
 
