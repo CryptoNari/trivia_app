@@ -43,7 +43,7 @@ def create_app(test_config=None):
   @app.route('/categories')
   def retrieve_categories():
     query = Category.query.all()
-    categories = [category.format() for category in query]
+    categories = {category.id : category.type for category in query}
     return jsonify({
       'success': True,
       'categories': categories,
@@ -66,14 +66,14 @@ def create_app(test_config=None):
     #questions = [question.format() for question in query]
     page_questions = paginate_questions(request, query)
     query_cat = Category.query.all()
-    categories = [category.format() for category in query_cat]
+    categories = {category.id : category.type for category in query_cat}
 
     return jsonify({
       'success': True,
       'questions': page_questions,
-      'total_questions': len(query),
+      'totalQuestions': len(query),
       'categories':  categories,
-      'current_category ': '',
+      'currentCategory ': '',
       'page': request.args.get('page', 1, type=int),
     })
   ''' 
@@ -137,7 +137,8 @@ def create_app(test_config=None):
         result = {
           'success': True,
           'questions': searched_questions,
-          'total_found': len(searched_questions)
+          'totalQuestions': len(Question.query.all()),
+          'currentCategory': ''
         }
       else:
         # POST a new question
@@ -157,7 +158,6 @@ def create_app(test_config=None):
     return jsonify(result)
 
   '''
-  @TODO: 
   Create a GET endpoint to get questions based on category. 
 
   TEST: In the "List" tab / main screen, clicking on one of the 
@@ -165,15 +165,19 @@ def create_app(test_config=None):
   category to be shown. 
   '''
 
-  @app.route('/category/<int:category_id>/questions')
+  @app.route('/categories/<int:category_id>/questions')
   def retrieve_category_questions(category_id):
     try:
       questions = Question.query.filter(Question.category==category_id).all()
       page_questions = paginate_questions (request, questions)
+      category = Category.query.filter(Category.id==category_id).one_or_none()
+      
+
       result = {
         'success': True,
         'questions': page_questions,
-        'category_total': len(questions)
+        'totalQuestions': len(Question.query.all()),
+        'currentCategory': category.type
       }
 
     except:
@@ -195,6 +199,9 @@ def create_app(test_config=None):
   one question at a time is displayed, the user is allowed to answer
   and shown whether they were correct or not. 
   '''
+  @app.route('/quizzes', methods={'POST'})
+  def play_game():
+    print('test')
 
   ''' 
   Create error handlers for all expected errors 

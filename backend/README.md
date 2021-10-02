@@ -114,33 +114,15 @@ Errors arre returned in JSON format:
 - Returns:
 ```
 {
-  "categories": [
-    {
-      "id": 1, 
-      "type": "Science"
-    }, 
-    {
-      "id": 2, 
-      "type": "Art"
-    }, 
-    {
-      "id": 3, 
-      "type": "Geography"
-    }, 
-    {
-      "id": 4, 
-      "type": "History"
-    }, 
-    {
-      "id": 5, 
-      "type": "Entertainment"
-    }, 
-    {
-      "id": 6, 
-      "type": "Sports"
-    }
-  ], 
   "success": true, 
+  "categories": {
+    "1": "Science", 
+    "2": "Art", 
+    "3": "Geography", 
+    "4": "History", 
+    "5": "Entertainment", 
+    "6": "Sports"
+  }, 
   "total_categories": 6
 }
 ```
@@ -163,99 +145,18 @@ Errors arre returned in JSON format:
       "answer": "Maya Angelou", 
       "category": 4, 
       "difficulty": 2
-    }, 
-    {
-      "id": 9, 
-      "question": "What boxer's original name is Cassius Clay?", 
-      "answer": "Muhammad Ali", 
-      "category": 4, 
-      "difficulty": 1
-    }, 
-    {
-      "id": 2, 
-      "question": "What movie earned Tom Hanks his third straight Oscar nomination, in 1996?", 
-      "answer": "Apollo 13", 
-      "category": 5, 
-      "difficulty": 4
-    }, 
-    {
-      "id": 4, 
-      "question": "What actor did author Anne Rice first denounce, then praise in the role of her beloved Lestat?", 
-      "answer": "Tom Cruise", 
-      "category": 5, 
-      "difficulty": 4
-    }, 
-    {
-      "id": 6, 
-      "question": "What was the title of the 1990 fantasy directed by Tim Burton about a young man with multi-bladed appendages?", 
-      "answer": "Edward Scissorhands", 
-      "category": 5, 
-      "difficulty": 3
-    }, 
-    {
-      "id": 10, 
-      "question": "Which is the only team to play in every soccer World Cup tournament?", 
-      "answer": "Brazil", 
-      "category": 6, 
-      "difficulty": 3
-    }, 
-    {
-      "id": 11, 
-      "question": "Which country won the first ever soccer World Cup in 1930?", 
-      "answer": "Uruguay", 
-      "category": 6, 
-      "difficulty": 4
-    }, 
-    {
-      "id": 12, 
-      "question": "Who invented Peanut Butter?", 
-      "answer": "George Washington Carver", 
-      "category": 4, 
-      "difficulty": 2
-    }, 
-    {
-      "id": 13, 
-      "question": "What is the largest lake in Africa?", 
-      "answer": "Lake Victoria", 
-      "category": 3, 
-      "difficulty": 2
-    }, 
-    {
-      "id": 14, 
-      "question": "In which royal palace would you find the Hall of Mirrors?", 
-      "answer": "The Palace of Versailles", 
-      "category": 3, 
-      "difficulty": 3
     }
   ], 
-  "total_questions": 19, 
-  "categories": [
-    {
-      "id": 1, 
-      "type": "Science"
-    }, 
-    {
-      "id": 2, 
-      "type": "Art"
-    }, 
-    {
-      "id": 3, 
-      "type": "Geography"
-    }, 
-    {
-      "id": 4, 
-      "type": "History"
-    }, 
-    {
-      "id": 5, 
-      "type": "Entertainment"
-    }, 
-    {
-      "id": 6, 
-      "type": "Sports"
-    }
-  ], 
-  "current_category ": "", 
+  "totalQuestions": 20, 
+  "categories": {
+    "1": "Science", 
+    "2": "Art", 
+    "3": "Geography", 
+    "4": "History", 
+    "5": "Entertainment", 
+    "6": "Sports"
+  }, 
+  "currentCategory ": "", 
   "page": 1
 }
 ```
@@ -279,22 +180,9 @@ Errors arre returned in JSON format:
       "category": 1, 
       "difficulty": 4
     }, 
-    {
-      "id": 21, 
-      "question": "Who discovered penicillin?", 
-      "answer": "Alexander Fleming", 
-      "category": 1, 
-      "difficulty": 3
-    }, 
-    {
-      "id": 22, 
-      "question": "Hematology is a branch of medicine involving the study of what?", 
-      "answer": "Blood", 
-      "category": 1, 
-      "difficulty": 4
-    }
   ], 
-  "category_total": 3
+  "totalQuestions": 20, 
+  "currentCategory": "Science"
 }
 ```
 
@@ -338,51 +226,10 @@ Returns:
       "answer": "Brazil", 
       "category": 6, 
       "difficulty": 3
-    }, 
-    {
-      "id": 11, 
-      "question": "Which country won the first ever soccer World Cup in 1930?", 
-      "answer": "Uruguay", 
-      "category": 6, 
-      "difficulty": 4
-    }, 
-    {
-      "id": 14, 
-      "question": "In which royal palace would you find the Hall of Mirrors?", 
-      "answer": "The Palace of Versailles", 
-      "category": 3, 
-      "difficulty": 3
-    }, 
-    {
-      "id": 15, 
-      "question": "The Taj Mahal is located in which Indian city?", 
-      "answer": "Agra", 
-      "category": 3, 
-      "difficulty": 2
-    }, 
-    {
-      "id": 16, 
-      "question": "Which Dutch graphic artist\u2013initials M C was a creator of optical illusions?", 
-      "answer": "Escher", 
-      "category": 2, 
-      "difficulty": 1
-    }, 
-    {
-      "id": 19, 
-      "question": "Which American artist was a pioneer of Abstract Expressionism, and a leading exponent of action painting?", 
-      "answer": "Jackson Pollock", 
-      "category": 2, 
-      "difficulty": 2
-    }, 
-    {
-      "id": 23, 
-      "question": "Which dung beetle was worshipped by the ancient Egyptians?", 
-      "answer": "Scarab", 
-      "category": 4, 
-      "difficulty": 4
-    }
+    },  
   ], 
-  "total_found": 7
+  "totalQuestions": 20, 
+  "currentCategory": ""
 }
 ```    
 
