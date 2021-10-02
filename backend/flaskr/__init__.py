@@ -4,6 +4,7 @@ from flask import Flask, request, abort, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 import random
+from sqlalchemy import not_
 
 from models import setup_db, Question, Category, db
 
@@ -199,9 +200,37 @@ def create_app(test_config=None):
   one question at a time is displayed, the user is allowed to answer
   and shown whether they were correct or not. 
   '''
-  @app.route('/quizzes', methods={'POST'})
+
+  @app.route('/quizzes', methods=['POST'])
   def play_game():
-    print('test')
+    body = request.get_json()
+    previous_questions = body.get('previous_questions', None)
+    category = body.get('quiz_category', None)
+
+    # Check Cateqory, if 0 then query all questions
+    if category["id"] == 0:
+      questions = ( Question.query.order_by(Question.id)
+                      .filter(not_(Question.id.in_(previous_questions)))
+                      .all()
+      )  
+    else:
+      questions = ( Question.query.order_by(Question.id)
+                      .filter(Question.category == category["id"])
+                      .filter(not_(Question.id.in_(previous_questions)))
+                      .all()
+      )
+   
+    # Check if there is a question left
+    if questions:
+      question = questions[0].format()
+    else:
+      question = None
+
+    result = {
+      'success': True,
+      'question': question,
+    }
+    return jsonify(result)
 
   ''' 
   Create error handlers for all expected errors 
