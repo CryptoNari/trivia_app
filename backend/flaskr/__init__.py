@@ -17,7 +17,6 @@ def paginate_questions(request, query):
 
   questions = [question.format() for question in query]
   page_questions = questions[start:end]
-
   return page_questions
 
 def create_app(test_config=None):
@@ -25,10 +24,12 @@ def create_app(test_config=None):
   app = Flask(__name__)
   app.config['JSON_SORT_KEYS'] = False
   setup_db(app)
+
   '''
   Set up CORS. Allow '*' for origins. Delete the sample route after completing the TODOs
   '''
   cors = CORS(app, resources={r"/*":{'origins':'*'}})
+
   '''
   Use the after_request decorator to set Access-Control-Allow
   '''
@@ -37,6 +38,7 @@ def create_app(test_config=None):
     response.headers.add('Access-Control-Allow-Headers','Content-Type, Authorization')
     response.headers.add('Access-Control-Allow-Methods','GET, POST, PATCH, DELETE, OPTIONS')
     return response
+
   ''' 
   Create an endpoint to handle GET requests 
   for all available categories.
@@ -50,6 +52,7 @@ def create_app(test_config=None):
       'categories': categories,
       'total_categories': len(categories)
     })
+
   ''' 
   Create an endpoint to handle GET requests for questions, 
   including pagination (every 10 questions). 
@@ -77,6 +80,7 @@ def create_app(test_config=None):
       'currentCategory ': '',
       'page': request.args.get('page', 1, type=int),
     })
+
   ''' 
   Create an endpoint to DELETE question using a question ID. 
 
@@ -99,10 +103,11 @@ def create_app(test_config=None):
         abort(404)
       else:  
         abort(422)
+
     finally:
       db.session.close()
-    return jsonify(result)
 
+    return jsonify(result)
 
   ''' 
   Create an endpoint to POST a new question, 
@@ -154,8 +159,10 @@ def create_app(test_config=None):
       db.session.rollback()
       print(sys.exc_info())
       abort(422)
+
     finally:
       db.session.close()
+
     return jsonify(result)
 
   '''
@@ -165,7 +172,6 @@ def create_app(test_config=None):
   categories in the left column will cause only questions of that 
   category to be shown. 
   '''
-
   @app.route('/categories/<int:category_id>/questions')
   def retrieve_category_questions(category_id):
     try:
@@ -173,7 +179,6 @@ def create_app(test_config=None):
       page_questions = paginate_questions (request, questions)
       category = Category.query.filter(Category.id==category_id).one_or_none()
       
-
       result = {
         'success': True,
         'questions': page_questions,
@@ -190,7 +195,6 @@ def create_app(test_config=None):
     return jsonify(result)
 
   '''
-  @TODO: 
   Create a POST endpoint to get questions to play the quiz. 
   This endpoint should take category and previous question parameters 
   and return a random questions within the given category, 
@@ -200,7 +204,6 @@ def create_app(test_config=None):
   one question at a time is displayed, the user is allowed to answer
   and shown whether they were correct or not. 
   '''
-
   @app.route('/quizzes', methods=['POST'])
   def play_game():
     body = request.get_json()
@@ -269,5 +272,3 @@ def create_app(test_config=None):
     )
 
   return app
-
-    

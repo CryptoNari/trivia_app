@@ -188,9 +188,9 @@ Errors arre returned in JSON format:
 
 #### POST ('/questions')
 - General:
-    - Adds a question to the dictionary or search for a question in the dictonary
+    - (01.)Adds a question to the dictionary or (02.)search for a question in the dictonary
 
-- Add a Question:    
+- 01.  Add a Question:    
     - Request data: {question(type=String),answer(type=String),category(type=Int),difficulty(type=Int)}
 - Sample:
     - `curl -d '{"question":"question-text","answer":"answer_text","category":2,"difficulty":2}'\`
@@ -210,7 +210,7 @@ Errors arre returned in JSON format:
   }
 }
 ```
-- Search for Questions:    
+- 02.  Search for Questions:    
     - Request data: {search(type=String)} 
 - Sample:
     - `curl -d '{"search":"Which"}' -H "Content-Type: application/json" --request POST http://127.0.0.1:5000/questions`
@@ -232,6 +232,31 @@ Returns:
   "currentCategory": ""
 }
 ```    
+
+#### POST ('/quizzes')
+- General:
+    - Retrieve a question to play the quiz
+
+- Request data: {previous_questions[type=int],quiz_category{'id': type=int}}
+- Sample:
+    - `curl -d '{"previous_questions":[1],"quiz_category":{"id":0}\`
+      `-H "Content-Type: application/json" \`
+      `--request POST http://127.0.0.1:5000/quizzes`
+
+- Returns:
+```
+{
+  "success": true, 
+  "question": {
+    "id": 2, 
+    "question": "What movie earned Tom Hanks his third straight Oscar nomination, in 1996?", 
+    "answer": "Apollo 13", 
+    "category": 5, 
+    "difficulty": 4
+  }
+}
+```
+
 
 #### DELETE ('/questions/<int:question_id>')
 - General:
