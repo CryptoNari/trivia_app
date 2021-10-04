@@ -90,6 +90,7 @@ Three error types are implemented:
 - 400: Bad request
 - 404: Resource not found
 - 422: Not processable
+- 500: Internal server error
 
 Errors arre returned in JSON format:
 
